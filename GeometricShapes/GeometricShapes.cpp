@@ -26,6 +26,22 @@ int main() {
 
     Ellipse ellipse3(ellipse1);
     std::cout << ellipse3 << std::endl;
+    std::cout << "Изотропно увеличиваем ellipse3 в 5 раз: " << std::endl;
+    ellipse3.scale(5);
+    std::cout << ellipse3 << std::endl;
+
+    try {
+        std::cout << "Изотропно увеличиваем ellipse3 в 0 раз: " << std::endl;
+        ellipse3.scale(0);
+        std::cout << ellipse3 << std::endl;
+    } catch (const char* error_message1) {
+        std::cout << error_message1 << std::endl;
+    }
+    std::cout << std::endl;
+
+    std::cout << "Изотропно увеличиваем ellipse3 в 0.2 раз: " << std::endl;
+    ellipse3.scale(0.2);
+    std::cout << ellipse3 << std::endl;
 
     std::cout << "Move cloned ellipse1" << std::endl;
     std::cout << &ellipse2 << std::endl << std::endl;
@@ -59,6 +75,10 @@ int main() {
     Point pointMax1(0, 0);
     Regular triangle(zero1, pointMax1, pointMin1);
     std::cout << triangle << std::endl;
+    
+    std::cout << "Triangle move on 4, 6" << std::endl;
+    triangle.move(4, 6);
+    std::cout << triangle << std::endl;
 
 
     std::cout << "Square: ожидание" << std::endl;
@@ -69,15 +89,35 @@ int main() {
     Regular square(zero2, pointMax2, pointMin2);
     std::cout << square << std::endl;
 
-
+    std::cout << "Изотропно увеличиваем Square в 3 раза: " << std::endl;
+    square.scale(3);
+    std::cout << square << std::endl;
 
     std::cout << "Pentagon: ожидание" << std::endl;
     std::cout << "REGULAR 3.4 1.0 0.0 3.3 2.3" << std::endl << "Вывод:" << std::endl;
     Point zero3(2.1881909602356, 1.1881909602356);
     Point pointMin3(1.3210197609601, 1.6300367553551);
     Point pointMax3(1, 1);
-    Regular pentagon(zero3, pointMax3, pointMin3);
+    Regular pentagon(zero3, pointMin3, pointMax3);
     std::cout << pentagon << std::endl;
+
+    std::cout << "Изотропно увеличиваем pentagon в 2 раза: " << std::endl;
+    pentagon.scale(2);
+    std::cout << pentagon << std::endl;
+
+    std::cout << "Изотропно увеличиваем pentagon в 0.5 раз: " << std::endl;
+    pentagon.scale(0.5);
+    std::cout << pentagon << std::endl;
+
+    try {
+        std::cout << "Изотропно увеличиваем pentagon в 0 раз: " << std::endl;
+        pentagon.scale(0);
+        std::cout << pentagon << std::endl;
+    }
+    catch (const char* error_message1) {
+        std::cout << error_message1 << std::endl;
+    }
+    std::cout << std::endl;
 
     std::cout << "Octadecagon: ожидание" << std::endl;
     std::cout << "REGULAR 6533.3 -42.1 -8.0 50.1 82.7" << std::endl << "Вывод:" << std::endl;
@@ -116,7 +156,6 @@ int main() {
 
     Point zero8(0, 0);
     Point Point8(1, 0);
-    //Point Point8(0, 1);
     try {
         Regular example(zero8, Point8, zero8);
         std::cout << example << std::endl;

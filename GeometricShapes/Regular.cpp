@@ -103,6 +103,16 @@ void Regular::move(const Point& center) {
 	move(dx, dy);
 }
 
+void Regular::scale(double coefficient) {
+	if (coefficient == 0) {
+		throw "Коэффициент не должен быть равен нулю!";
+	}
+	pointOnRadiusDescribed_.setX((pointOnRadiusDescribed_.getX() - center_.getX()) * coefficient + center_.getX());
+	pointOnRadiusDescribed_.setY((pointOnRadiusDescribed_.getY() - center_.getY()) * coefficient + center_.getY());
+	pointOnRadiusInscribed_.setX((pointOnRadiusInscribed_.getX() - center_.getX()) * coefficient + center_.getX());
+	pointOnRadiusInscribed_.setY((pointOnRadiusInscribed_.getY() - center_.getY())* coefficient + center_.getY());
+}
+
 Regular* Regular::clone() const {
 	return new Regular(*this);
 }

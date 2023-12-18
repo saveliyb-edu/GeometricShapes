@@ -50,12 +50,18 @@ void Ellipse::move(const Point& center) {
 	center_ = center;
 }
 
-Shape* Ellipse::clone() const {
-	//Ellipse* a = new Ellipse(center_, radiusX_, radiusY_);
-	//std::cout << &a << ' ' << a << std::endl;
-	return new Ellipse(center_, radiusX_, radiusY_);
-	//return a;
+void Ellipse::scale(double coefficient) {
+	if (coefficient == 0) {
+		throw "Коэффициент не должен быть равен нулю!";
+	}
+	radiusX_ *= coefficient;
+	radiusY_ *= coefficient;
 }
+
+Shape* Ellipse::clone() const {
+	return new Ellipse(center_, radiusX_, radiusY_);
+}
+
 
 std::string Ellipse::getName() const {
 	return std::string("ELLIPSE");

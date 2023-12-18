@@ -16,7 +16,7 @@ public:
 	FrameRectangle getFrameRectangle() const override;
 	void move(double dx, double dy) override;
 	void move(const Point& center) override;
-	//void scale(double coefficient) override;
+	void scale(double coefficient) override;
 	Shape* clone() const override;
 	std::string getName() const override;
 
