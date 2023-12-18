@@ -4,17 +4,13 @@
 #include <iomanip>
 
 
-Ellipse::Ellipse() {
-	Point zero_point;
-	center_ = zero_point;
-	radiusX_ = 0.0;
-	radiusY_ = 0.0;
-}
-
 Ellipse::Ellipse(const Point center, const double radius_x, const double radius_y) {
+	if (radius_x == 0 || radius_y == 0) {
+		throw "ValueError: ни один из радиусов не должен быть равен нулю!";
+	}
 	center_ = center;
-	radiusX_ = radius_x;
-	radiusY_ = radius_y;
+	radiusX_ = abs(radius_x);
+	radiusY_ = abs(radius_y);
 }
 
 Ellipse::Ellipse(const Ellipse& other) {
@@ -24,10 +20,13 @@ Ellipse::Ellipse(const Ellipse& other) {
 }
 
 Ellipse::Ellipse(const double centerX, const double centerY, const double radius_x, const double radius_y) {
+	if (radius_x == 0 || radius_y == 0) {
+		throw "ValueError: ни один из радиусов не должен быть равен нулю!";
+	}
 	Point center_point(centerX, centerY);
 	center_ = center_point;
-	radiusX_ = radius_x;
-	radiusY_ = radius_y;
+	radiusX_ = abs(radius_x);
+	radiusY_ = abs(radius_y);
 }
 
 Ellipse::~Ellipse() {
@@ -51,8 +50,11 @@ void Ellipse::move(const Point& center) {
 	center_ = center;
 }
 
-Ellipse* Ellipse::clone() const {
-	return new Ellipse(*this);
+Shape* Ellipse::clone() const {
+	//Ellipse* a = new Ellipse(center_, radiusX_, radiusY_);
+	//std::cout << &a << ' ' << a << std::endl;
+	return new Ellipse(center_, radiusX_, radiusY_);
+	//return a;
 }
 
 std::string Ellipse::getName() const {

@@ -5,7 +5,6 @@
 class Regular : public Shape {
 	friend std::ostream& operator<<(std::ostream& out, const Regular& obj);
 public:
-	Regular();
 	Regular(const Point center, const Point radiusDescribed, const Point radiusInscribed);
 	Regular(const Regular& other);
 	Regular(const double centerX, const double centerY, const double pointDescribedX, const double pointDescribedY, const double pointInscribedX, const double pointInscribedY);
@@ -22,6 +21,9 @@ public:
 
 	double getRadiusDescribed() const;
 	double getRadiusInscribed() const;
+
+	bool isRightAngledTriangle() const;
+	double getCut(Point a, Point b) const;
 
 private:
 	Point center_;

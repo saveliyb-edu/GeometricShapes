@@ -3,17 +3,24 @@
 #include <iostream>
 #include <iomanip>
 
-Regular::Regular() {
-	Point zero_point;
-	center_ = zero_point;
-	pointOnRadiusDescribed_ = zero_point;
-	pointOnRadiusInscribed_ = zero_point;
-}
-
 Regular::Regular(const Point center, const Point pointDescribed, const Point pointInscribed) {
 	center_ = center;
-	pointOnRadiusDescribed_ = pointDescribed;
-	pointOnRadiusInscribed_ = pointInscribed;
+	
+	double temp1 = getCut(center, pointInscribed);
+	double temp2 = getCut(center, pointDescribed);
+	if (temp1 == 0 || temp2 == 0) {
+		throw "ValueError: ни один из радиусов не должен быть равен нулю!";
+	}
+	if (temp1 < temp2) {
+		pointOnRadiusInscribed_ = pointInscribed;
+		pointOnRadiusDescribed_ = pointDescribed;
+	} else {
+		pointOnRadiusInscribed_ = pointDescribed;
+		pointOnRadiusDescribed_ = pointInscribed;
+	}
+	if (!(isRightAngledTriangle())) {
+		throw "ValueError: треугольник не прямоугольный!";
+	}
 }
 
 Regular::Regular(const Regular& other) {
@@ -114,6 +121,19 @@ double Regular::getRadiusInscribed() const {
 	double a2 = pow(pointOnRadiusInscribed_.getY() - center_.getY(), 2);
 	double b = sqrt(pow(pointOnRadiusInscribed_.getX() - center_.getX(), 2) + pow(pointOnRadiusInscribed_.getY() - center_.getY(), 2));
 	return b;
+}
+
+bool Regular::isRightAngledTriangle() const {
+	double a, b, c;
+	a = getCut(center_, pointOnRadiusInscribed_);
+	b = getCut(pointOnRadiusInscribed_, pointOnRadiusDescribed_);
+	c = getCut(center_, pointOnRadiusDescribed_);
+	double fallibility = 0.0000000001;
+	return (a * a + b * b - c * c) < fallibility;
+}
+
+double Regular::getCut(Point a, Point b) const {
+	return sqrt(pow(a.getX() - b.getX(), 2) + pow(a.getY() - b.getY(), 2));
 }
 
 std::ostream& operator<<(std::ostream& out, const Regular& obj) {
