@@ -19,7 +19,7 @@ Regular::Regular(const Point center, const Point pointDescribed, const Point poi
 Regular::Regular(const Regular& other) {
 	center_ = other.center_;
 	pointOnRadiusDescribed_ = other.pointOnRadiusDescribed_;
-	pointOnRadiusInscribed_ = other.pointOnRadiusDescribed_;
+	pointOnRadiusInscribed_ = other.pointOnRadiusInscribed_;
 }
 
 Regular::Regular(const double centerX, const double centerY, const double pointDescribedX, const double pointDescribedY, const double pointInscribedX, const double pointInscribedY) {
@@ -37,35 +37,37 @@ Regular::~Regular() {
 double Regular::getArea() const {
 	double RadiusDescribed = getRadiusDescribed();
 	double RadiusInscribed = getRadiusInscribed();
-	//double a = getRadiusInscribed();
-	//double b = RadiusDescribed;
-	//double x = acos(getRadiusInscribed() / RadiusDescribed);
-	unsigned int numberSides = round(3.1415 / (acos(RadiusDescribed / getRadiusInscribed())));
+	unsigned int numberSides = round(3.1415926535 / (acos(getRadiusInscribed() / RadiusDescribed)));
 	if (numberSides == 0) {
 		return 0;
 	}
-	double square = numberSides / 2 * RadiusDescribed * RadiusDescribed * sin(3.1415 / numberSides);
+	double square = numberSides * RadiusDescribed * RadiusDescribed * sin(2*3.1415926535 / numberSides) / 2;
 	return square;
 }
 
 FrameRectangle Regular::getFrameRectangle() const {
-	//unsigned int numberSides = 180 / (acos(getRadiusInscribed() / getRadiusDescribed()));
-	unsigned int numberSides = round(3.1415 / (acos(getRadiusDescribed() / getRadiusInscribed())));
-	Point lowerLeft(center_);
-	Point upperRight(center_);
-	Point temp;
-	double angle = 2 * acos(getRadiusInscribed() / getRadiusDescribed());
+	unsigned int numberSides = round(3.1415926535 / (acos(getRadiusInscribed() / getRadiusDescribed())));
+
+	double alpha = 2 * acos(getRadiusInscribed() / getRadiusDescribed());
 	double zeroAngle = acos((pointOnRadiusDescribed_.getX() - center_.getX()) / getRadiusDescribed());
-	for (int i = 0; i < numberSides; i+=2) {
-		temp.setX(cos(zeroAngle + angle*i) * getRadiusDescribed() + center_.getX());
-		temp.setY(sin(zeroAngle + angle * i) * getRadiusDescribed() + center_.getY());
+	double angle = zeroAngle;
+	double a = getRadiusDescribed();
+	double b = getRadiusInscribed();
+
+	Point lowerLeft(pointOnRadiusDescribed_);
+	Point upperRight(lowerLeft);
+	Point temp;
+	for (int i = 0; i < numberSides - 1; i++) {
+		angle += alpha;
+		temp.setX(cos(angle) * getRadiusDescribed() + center_.getX());
+		temp.setY(sin(-angle) * getRadiusDescribed() + center_.getY());
 
 		if (temp.getX() < lowerLeft.getX()) {
 			lowerLeft.setX(temp.getX());
 		}
 		else if (temp.getX() > upperRight.getX()) {
 			upperRight.setX(temp.getX());
-			}
+		}
 		if (temp.getY() < lowerLeft.getY()) {
 			lowerLeft.setY(temp.getY());
 		}
@@ -73,7 +75,7 @@ FrameRectangle Regular::getFrameRectangle() const {
 			upperRight.setY(temp.getY());
 		}
 	}
-	FrameRectangle frame(center_, lowerLeft, upperRight);
+	FrameRectangle frame(lowerLeft, upperRight);
 	return frame;
 }
 
@@ -103,15 +105,15 @@ std::string Regular::getName() const {
 }
 
 double Regular::getRadiusDescribed() const {
-	double a = sqrt(pow(center_.getX() - pointOnRadiusDescribed_.getX(), 2) + pow(center_.getY() - pointOnRadiusDescribed_.getY(), 2));
+	double a = sqrt(pow(pointOnRadiusDescribed_.getX() - center_.getX(), 2) + pow(pointOnRadiusDescribed_.getY() - center_.getY(), 2));
 	return a;
-	//return sqrt(pow(center_.getX() - pointOnRadiusDescribed_.getX(), 2) + pow(center_.getY() - pointOnRadiusDescribed_.getY(), 2));
 }
 
 double Regular::getRadiusInscribed() const {
-	double b = sqrt(pow(center_.getX() - pointOnRadiusInscribed_.getX(), 2) + pow(center_.getY() - pointOnRadiusInscribed_.getY(), 2));
+	double a1 = pow(pointOnRadiusInscribed_.getX() - center_.getX(), 2);
+	double a2 = pow(pointOnRadiusInscribed_.getY() - center_.getY(), 2);
+	double b = sqrt(pow(pointOnRadiusInscribed_.getX() - center_.getX(), 2) + pow(pointOnRadiusInscribed_.getY() - center_.getY(), 2));
 	return b;
-	//return sqrt(pow(center_.getX() - pointOnRadiusInscribed_.getX(), 2) + pow(center_.getY() - pointOnRadiusInscribed_.getY(), 2));
 }
 
 std::ostream& operator<<(std::ostream& out, const Regular& obj) {

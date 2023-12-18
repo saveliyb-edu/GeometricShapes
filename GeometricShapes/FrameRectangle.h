@@ -13,6 +13,7 @@ public:
 	FrameRectangle(Point pos, double width, double height);
 	FrameRectangle(const FrameRectangle& other);
 	FrameRectangle(Point pos, Point lowerLeft, Point upperRight);
+	FrameRectangle(Point lowerLeft, Point upperRight);
 	~FrameRectangle();
 
 	void setWidth(double width);

@@ -28,6 +28,13 @@ FrameRectangle::FrameRectangle(Point pos, Point lowerLeft, Point upperRight) {
 	height_ = upperRight.getY() - lowerLeft.getY();
 }
 
+FrameRectangle::FrameRectangle(Point lowerLeft, Point upperRight) {
+	width_ = upperRight.getX() - lowerLeft.getX();
+	height_ = upperRight.getY() - lowerLeft.getY();
+	Point pos(lowerLeft.getX() + width_ / 2, lowerLeft.getY() + height_ / 2);
+	pos_ = pos;
+}
+
 FrameRectangle::~FrameRectangle() {}
 
 void FrameRectangle::setWidth(double width) {
